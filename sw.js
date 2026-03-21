@@ -1,20 +1,15 @@
-const CACHE_NAME = 'detetive-v1';
-// Lista de ficheiros a guardar para funcionar offline
+const CACHE_NAME = 'v1';
 const assets = [
   './',
   './index.html',
   './manifest.json',
-  'https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&display=swap'
+  './sw.js'
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(assets))
-  );
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(assets)));
 });
 
 self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request))
-  );
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
 });
