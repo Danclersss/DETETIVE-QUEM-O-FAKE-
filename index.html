@@ -128,10 +128,15 @@
 
     <div class="card hidden" id="screen-lobby">
         <div style="font-size:0.8rem; color:var(--primary)">CÓDIGO DA SALA</div>
-        <div class="room-code" id="display-code" style="font-size:3rem; color:var(--accent); font-weight:900;">----</div>
-        <div id="player-list" style="margin:20px 0; padding:10px; background: rgba(0,0,0,0.3); border-radius: 20px;"></div>
-        <button class="btn-main hidden" id="host-start-btn" onclick="hostStartGame()">COMEÇAR JOGO</button>
-        <p id="lobby-msg" class="lang-aguardando">Aguardando host...</p>
+        <div class="room-code" id="display-code">----</div>
+        
+        <button class="btn-main" style="background: #25D366; border-bottom: 4px solid #128C7E; color: white; margin-bottom: 15px;" onclick="convidarAmigos()">
+            📢 CONVIDAR AMIGOS
+        </button>
+        
+        <div id="player-list" style="margin: 20px 0;"></div>
+        <button class="btn-main hidden" id="host-start-btn" onclick="hostStartGame()">COMEÇAR</button>
+        <p id="lobby-msg">Aguardando host...</p>
     </div>
 
     <div class="card hidden" id="screen-game">
@@ -429,6 +434,25 @@
         }
 
         window.onload = () => trocarIdioma('pt');
+        function convidarAmigos() {
+    const código = document.getElementById('display-code').innerText;
+    const urlSugerida = window.location.href; // Pega o link do seu site no GitHub
+    
+    const textoMensagem = `🕵️‍♂️ *DETETIVE: QUEM É O FAKE?*\n\nBora jogar? O código da sala é: *${código}*\n\nEntre aqui: ${urlSugerida}`;
+
+    // Tenta usar o compartilhamento nativo do celular
+    if (navigator.share) {
+        navigator.share({
+            title: 'Detetive: Quem é o Fake?',
+            text: textoMensagem,
+            url: urlSugerida,
+        }).catch(err => console.log('Erro ao compartilhar', err));
+    } else {
+        // Se estiver no PC (onde não tem navigator.share), copia para o teclado
+        navigator.clipboard.writeText(textoMensagem);
+        alert("Link e código copiados para a área de transferência! Cole para seus amigos.");
+    }
+}
     </script>
 </body>
 </html>
